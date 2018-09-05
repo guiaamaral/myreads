@@ -103,6 +103,19 @@ body, .app {
   padding: 80px 10px 20px;
 }
 
+.number-of-results {
+  font-size: 14px;
+  font-style: italic;
+  margin: 0 0 10px;
+  padding: 0;
+  text-align: center;
+}
+.clear-search {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
 /* books grid */
 
 .books-grid {
