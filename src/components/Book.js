@@ -1,10 +1,13 @@
 import React,{ Component } from 'react'
+import PropType from 'prop-types'
 
 class Book extends Component {
 
   render() {
 
     const { book } = this.props
+    const noCover = "https://books.google.com/googlebooks/images/no_cover_thumb.gif"
+    console.log(book)
 
     return (
       <li>
@@ -15,7 +18,7 @@ class Book extends Component {
               style={{
                 width: 128,
                 height: 193,
-                backgroundImage: `url(${ book.imageLinks && book.imageLinks.thumbnail ? book.imageLinks.thumbnail : "" })`
+                backgroundImage: `url(${ book.imageLinks && book.imageLinks.thumbnail ? book.imageLinks.thumbnail : noCover })`
               }}></div>
             <div className="book-shelf-changer">
               <select>
@@ -28,7 +31,7 @@ class Book extends Component {
             </div>
           </div>
           <div className="book-title">{ book.title }</div>
-            {book.authors && book.authors.map((author, index) => (
+            { book.authors && book.authors.map((author, index) => (
               <div className="book-authors" key={index}>{author}</div>
             ))}
         </div>
@@ -36,5 +39,9 @@ class Book extends Component {
     )
   }
 }
+
+Book.propType = {
+  book: PropType.object.isRequired
+};
 
 export default Book

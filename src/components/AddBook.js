@@ -2,6 +2,7 @@ import React,{ Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from '../utils/BooksAPI'
 import Book from './Book'
+import PropType from 'prop-types'
 
 class AddBook extends Component {
   state = {
@@ -15,17 +16,24 @@ class AddBook extends Component {
 
     if (query) {
       BooksAPI.search(query).then((books) => {
-        if (books.length > 0) {
-          this.setState( { foundBooks: books } );
-        } else {
+        if (!books || books.error) {
           this.setState( { foundBooks: [] } );
+        } else {
+          this.setState( { foundBooks: books } );
         }
       })
+    } else {
+      this.setState({ foundBooks: [] });
     }
   }
 
   clearQuery = () => {
-    this.setState( { query: '', foundBooks: [] } );
+    this.setState(
+      {
+        query: '',
+        foundBooks: []
+      }
+    );
   }
 
   render() {
@@ -53,7 +61,8 @@ class AddBook extends Component {
             {foundBooks.map((book) => (
               <Book
                 key={ book.id }
-                book={ book } />
+                book={ book }
+              />
             ))}
           </ol>
         </div>
@@ -61,5 +70,10 @@ class AddBook extends Component {
     )
   }
 }
+
+AddBook.propType = {
+  query: PropType.string.isRequired,
+  foundBooks: PropType.object.isRequired
+};
 
 export default AddBook

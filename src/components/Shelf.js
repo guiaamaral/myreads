@@ -1,51 +1,35 @@
 import React,{ Component } from 'react'
 import Book from './Book'
+import PropType from 'prop-types'
 
 class Shelf extends Component {
 
   render() {
 
-    const { books } = this.props
-
-    const shelves = [
-      {
-        "id": "currentlyReading",
-        "title": "Currently Reading"
-      },
-      {
-        "id": "wantToRead",
-        "title": "Want To Read"
-      },
-      {
-        "id": "read",
-        "title": "Read"
-      }
-    ]
+    const { books, shelfId, shelfTitle } = this.props
     
     return (
-      <div className="list-books-content">
-        <div>
-          { shelves.map((shelf) => (
-            <div
-              className="bookshelf"
-              key={shelf.id}>
-              <h2 className="bookshelf-title">{shelf.title}</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  { books.map((book) => (
-                    <Book
-                      key={ book.id }
-                      book={ book }
-                    />
-                  ))}
-                </ol>
-              </div>
-            </div>
-          ))}
+      <div className="bookshelf">
+        <h2 className="bookshelf-title">{ shelfTitle }</h2>
+        <div className="bookshelf-books">
+          <ol className="books-grid">
+            { books.filter((b) => b.shelf === shelfId).map((book) => (
+              <Book
+                key={ book.id }
+                book={ book }
+                shelf={ book.shelf }
+              />
+            ))}
+          </ol>
         </div>
       </div>
     )
   }
 }
+
+Shelf.propType = {
+  shelfTitle: PropType.string.isRequired,
+  books: PropType.object.isRequired
+};
 
 export default Shelf
