@@ -5,7 +5,7 @@ class Book extends Component {
 
   render() {
 
-    const { book } = this.props
+    const { book, changeShelf } = this.props
     const noCover = "https://books.google.com/googlebooks/images/no_cover_thumb.gif"
     console.log(book)
 
@@ -21,7 +21,10 @@ class Book extends Component {
                 backgroundImage: `url(${ book.imageLinks && book.imageLinks.thumbnail ? book.imageLinks.thumbnail : noCover })`
               }}></div>
             <div className="book-shelf-changer">
-              <select>
+              <select
+                onChange={(event) => changeShelf(book, event.target.value)}
+                defaultValue={ book.shelf }>
+              >
                 <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
@@ -41,7 +44,8 @@ class Book extends Component {
 }
 
 Book.propType = {
-  book: PropType.object.isRequired
+  book: PropType.object.isRequired,
+  changeShelf: PropType.func.isRequired
 };
 
 export default Book

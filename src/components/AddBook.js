@@ -39,6 +39,7 @@ class AddBook extends Component {
   render() {
 
     const { query, foundBooks } = this.state
+    const { changeShelf } = this.props
 
     return (
       <div className="search-books">
@@ -48,20 +49,21 @@ class AddBook extends Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              value={query}
+              value={ query }
               onChange={ this.updateQuery }
               />
           </div>
         </div>
         <div className="search-books-results">
-          {foundBooks.length > 0 && (
-            <p className="number-of-results">Showing {foundBooks.length} books. <a className="clear-search" onClick={this.clearQuery}>Clear search</a></p>
+          { foundBooks.length > 0 && (
+            <p className="number-of-results">Showing { foundBooks.length } books. <a className="clear-search" onClick={this.clearQuery}>Clear search</a></p>
           )}
           <ol className="books-grid">
-            {foundBooks.map((book) => (
+            { foundBooks.map((book) => (
               <Book
                 key={ book.id }
                 book={ book }
+                changeShelf={ changeShelf }
               />
             ))}
           </ol>
@@ -72,8 +74,9 @@ class AddBook extends Component {
 }
 
 AddBook.propType = {
-  query: PropType.string.isRequired,
-  foundBooks: PropType.object.isRequired
+  changeShelf: PropType.func.isRequired,
+  foundBooks: PropType.object.isRequired,
+  query: PropType.string.isRequired
 };
 
 export default AddBook

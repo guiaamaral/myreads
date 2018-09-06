@@ -19,9 +19,15 @@ class BooksApp extends React.Component {
     })
   }
 
-  getShelf = (bookId) => {
-    const [book] = this.state.books.filter(b => b.id === bookId)
-    return book && book.shelf ? book.shelf : 'none'
+  changeShelf = ( addBook, toShelf ) => {
+    BooksAPI.update(addBook, toShelf).then((response) =>{
+      addBook.shelf = toShelf
+
+      var newBook = this.state.books.filter( book => book.id !== addBook.id )
+
+      newBook.push(newBook);
+      this.setState({ books: newBook })
+    })
   }
 
   render() {
@@ -53,6 +59,7 @@ class BooksApp extends React.Component {
                   shelfId={ shelf.id }
                   shelfTitle={ shelf.title }
                   books={ this.state.books }
+                  changeShelf={ this.changeShelf }
                 />
               ))}
             </div>
@@ -63,7 +70,7 @@ class BooksApp extends React.Component {
         )} />
         <Route path="/add-book" render={()=>(
           <AddBook
-            getShelf={ this.getShelf }
+            changeShelf={ this.changeShelf }
           />
         )} />
       </div>

@@ -6,7 +6,7 @@ class Shelf extends Component {
 
   render() {
 
-    const { books, shelfId, shelfTitle } = this.props
+    const { books, shelfId, shelfTitle, changeShelf } = this.props
     
     return (
       <div className="bookshelf">
@@ -18,6 +18,7 @@ class Shelf extends Component {
                 key={ book.id }
                 book={ book }
                 shelf={ book.shelf }
+                changeShelf={ changeShelf }
               />
             ))}
           </ol>
@@ -28,8 +29,10 @@ class Shelf extends Component {
 }
 
 Shelf.propType = {
+  books: PropType.object.isRequired,
+  changeShelf:  PropType.func.isRequired,
   shelfTitle: PropType.string.isRequired,
-  books: PropType.object.isRequired
+  shelfId: PropType.string.isRequired
 };
 
 export default Shelf
