@@ -29,7 +29,7 @@ class Shelf extends Component {
 }
 
 Shelf.propType = {
-  books: PropType.object.isRequired,
+  books: PropType.array.isRequired,
   changeShelf:  PropType.func.isRequired,
   shelfTitle: PropType.string.isRequired,
   shelfId: PropType.string.isRequired
