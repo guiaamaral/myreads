@@ -1,4 +1,5 @@
 import React,{ Component } from 'react'
+import ShelfChanger from './ShelfChanger'
 import PropType from 'prop-types'
 
 class Book extends Component {
@@ -7,7 +8,6 @@ class Book extends Component {
 
     const { book, changeShelf } = this.props
     const noCover = "https://books.google.com/googlebooks/images/no_cover_thumb.gif"
-    console.log(book)
 
     return (
       <li>
@@ -18,20 +18,13 @@ class Book extends Component {
               style={{
                 width: 128,
                 height: 193,
+                backgroundSize: 'cover',
                 backgroundImage: `url(${ book.imageLinks && book.imageLinks.thumbnail ? book.imageLinks.thumbnail : noCover })`
               }}></div>
-            <div className="book-shelf-changer">
-              <select
-                onChange={(event) => changeShelf(book, event.target.value)}
-                defaultValue={ book.shelf }>
-              >
-                <option value="move" disabled>Move to...</option>
-                <option value="currentlyReading">Currently Reading</option>
-                <option value="wantToRead">Want to Read</option>
-                <option value="read">Read</option>
-                <option value="none">None</option>
-              </select>
-            </div>
+              <ShelfChanger
+                book={ book }
+                shelf={ book.shelf }
+                changeShelf={ changeShelf } />
           </div>
           <div className="book-title">{ book.title }</div>
             { book.authors && book.authors.map((author, index) => (

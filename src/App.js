@@ -1,5 +1,7 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
+import toastr from 'toastr'
+import 'toastr/build/toastr.min.css'
 import * as BooksAPI from './utils/BooksAPI'
 import './App.css'
 import Header from './components/Header'
@@ -19,15 +21,23 @@ class BooksApp extends React.Component {
     })
   }
 
-  changeShelf = ( addBook, toShelf ) => {
-    BooksAPI.update(addBook, toShelf).then((response) =>{
-      addBook.shelf = toShelf
-
-      var newBook = this.state.books.filter( book => book.id !== addBook.id )
-
-      newBook.push(newBook);
-      this.setState({ books: newBook })
-    })
+  changeShelf = (book, shelf) => {
+    book.shelf = shelf
+    this.setState(state => ({
+      books: state.books.filter(b => b.id !== book.id).concat([book])
+    }))
+    BooksAPI.update(book, shelf)
+    toastr.options = {
+      positionClass : 'toast-bottom-left',
+      hideDuration: 300,
+      timeOut: 3500
+    }
+    toastr.clear()
+    if (shelf !== 'none') {
+      toastr.success(`${book.title} was added to shelf!`)
+    } else {
+      toastr.error(`${book.title} was removed from shelf!`)
+    }
   }
 
   render() {
@@ -70,6 +80,7 @@ class BooksApp extends React.Component {
         )} />
         <Route path="/add-book" render={()=>(
           <AddBook
+            books={ this.state.books }
             changeShelf={ this.changeShelf }
           />
         )} />

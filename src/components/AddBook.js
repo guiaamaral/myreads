@@ -11,15 +11,20 @@ class AddBook extends Component {
   }
 
   updateQuery = (event) => {
-    const query = event.target.value.trim()
+    const query = event.target.value
     this.setState( { query: query } )
 
     if (query) {
-      BooksAPI.search(query).then((books) => {
-        if (!books || books.error) {
+      BooksAPI.search(query).then((foundBooks) => {
+        if (!foundBooks || foundBooks.error) {
           this.setState( { foundBooks: [] } );
         } else {
-          this.setState( { foundBooks: books } );
+          foundBooks = foundBooks.map((book) => {
+            const getBookShelf = this.props.books.find(b => b.id === book.id);
+            book.shelf = getBookShelf ? getBookShelf.shelf : 'none';
+            return book;
+          });
+          this.setState( { foundBooks: foundBooks } );
         }
       })
     } else {
@@ -74,8 +79,9 @@ class AddBook extends Component {
 }
 
 AddBook.propType = {
+  book: PropType.object.isRequired,
   changeShelf: PropType.func.isRequired,
-  foundBooks: PropType.object.isRequired,
+  foundBooks: PropType.array.isRequired,
   query: PropType.string.isRequired
 };
 
