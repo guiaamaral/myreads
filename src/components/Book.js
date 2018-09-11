@@ -1,5 +1,6 @@
 import React,{ Component } from 'react'
 import ShelfChanger from './ShelfChanger'
+import StarRatingComponent from 'react-star-rating-component'
 import PropType from 'prop-types'
 
 class Book extends Component {
@@ -27,6 +28,12 @@ class Book extends Component {
                 changeShelf={ changeShelf } />
           </div>
           <div className="book-title">{ book.title }</div>
+            <StarRatingComponent
+              name={ book.id }
+              value={ book.averageRating }
+              starCount={ 5 }
+              editing={ false }
+            />
             { book.authors && book.authors.map((author, index) => (
               <div className="book-authors" key={index}>{author}</div>
             ))}
